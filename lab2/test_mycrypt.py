@@ -68,6 +68,5 @@ def test_timing():
 def test_too_large_inputs(invalid_input):
     with pytest.raises(ValueError):
         mycrypt.encode(invalid_input)
-        mycrypt.decode(invalid_input)
         
     
