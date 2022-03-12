@@ -64,7 +64,7 @@ def test_timing():
                                 'import mycrypt', repeat=3, number=30))
     assert 0.95 * timing2 < timing1 < 1.05 * timing2
 
-@pytest.mark.parametrize("invalid_input", [1001*"a", 1111*"b", 501*"a4#"])
+@pytest.mark.parametrize("invalid_input", [1001*"a", 1000*"b€/"])
 def test_too_large_inputs(invalid_input):
     with pytest.raises(ValueError):
         mycrypt.encode(invalid_input)

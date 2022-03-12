@@ -12,11 +12,8 @@ def encode(s):
     
 
     encrypted = ""
-    for i in range(1000):
-        if i < originlen:
-            c = s[i]
-        else:
-            c = "a"
+    sjusted = s.ljust(1001, "a")
+    for c in sjusted:
         if c in "+åäöÅÄÖ":
             raise ValueError
         elif c.isalpha():
@@ -38,11 +35,8 @@ def decode(s):
         raise ValueError
     
     decrypted = ""
-    for i in range(1000):
-        if i < originlen:
-            c = s[i]
-        else:
-            c = "a"
+    sjusted = s.ljust(1001, "a")
+    for c in sjusted:
         if c in "+åäöÅÄÖ":
             raise ValueError
         elif c.isalpha():
