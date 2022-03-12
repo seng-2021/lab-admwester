@@ -27,6 +27,17 @@ def test_encode(test_input, expected):
     '''Verify that strings given above match the expected results'''
     assert(mycrypt.encode(test_input)) == expected
 
+@pytest.mark.parametrize("test_input,expected", [
+    ("N", "a"),
+    ("O", "b"),
+    ("NOP", "abc"),
+    ('NOP!"#', "abc123"),
+    (u'€', "4")
+])
+def test_decode(test_input, expected):
+    '''Verify that strings given above match the expected results'''
+    assert(mycrypt.decode(test_input)) == expected
+
 
 @pytest.mark.parametrize("test_input", [
     '123', '!"#','abc'])
@@ -35,7 +46,7 @@ def test_encode_decode(test_input):
     assert(mycrypt.decode(mycrypt.encode(test_input))) == test_input
 
 
-@pytest.mark.parametrize("invalid_input", ['+','åäö'])
+@pytest.mark.parametrize("invalid_input", ['+','åäö', '@'])
 def test_invalid_char(invalid_input):
     '''Invalid characters should result in ValueError'''
     with pytest.raises(ValueError):
@@ -47,6 +58,19 @@ def test_invalid_types(invalid_input):
     '''Invalid parameter types should raise TypeError'''
     with pytest.raises(TypeError):
         mycrypt.encode(invalid_input)
+
+@pytest.mark.parametrize("invalid_input", ['+','åäö', '@'])
+def test_invalid_char_decode(invalid_input):
+    '''Invalid characters should result in ValueError'''
+    with pytest.raises(ValueError):
+        mycrypt.decode(invalid_input)
+
+
+@pytest.mark.parametrize("invalid_input", [1,-1,0,1.0, None, False, True, ["a"], bytes(5)])
+def test_invalid_types_decode(invalid_input):
+    '''Invalid parameter types should raise TypeError'''
+    with pytest.raises(TypeError):
+        mycrypt.decode(invalid_input)
 
 
 def test_timing():
@@ -68,5 +92,10 @@ def test_timing():
 def test_too_large_inputs(invalid_input):
     with pytest.raises(ValueError):
         mycrypt.encode(invalid_input)
+        
+@pytest.mark.parametrize("invalid_input", [1001*"a", 1000*"b€/"])
+def test_too_large_inputs_decode(invalid_input):
+    with pytest.raises(ValueError):
+        mycrypt.decode(invalid_input)
         
     
